@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lærehjelp</title>
+  <style>
+    /* --- CSS --- */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+      padding: 0;
+    }
+    header { background: #4CAF50; color: white; padding: 1rem; text-align: center; }
+    main { padding: 2rem; }
+    section { background: white; padding: 1rem 2rem; margin-bottom: 2rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    #chat-box { border: 1px solid #ccc; height: 200px; overflow-y: auto; padding: 1rem; margin-bottom: 0.5rem; background: #f9f9f9; }
+    input, select, button { padding: 0.5rem; margin: 0.2rem 0; }
+  </style>
+</head>
+<body>
+  <header><h1>Lærehjelp</h1></header>
+
+  <main>
+    <!-- AI Chat -->
+    <section id="ai-chat-section">
+      <h2>AI Leksehjelp</h2>
+      <div id="chat-box"></div>
+      <input type="text" id="chat-input" placeholder="Skriv spørsmålet ditt her...">
+      <button id="send-btn">Send</button>
+    </section>
+
+    <!-- Quiz -->
+    <section id="quiz-section">
+      <h2>Quiz</h2>
+      <label for="quiz-subject">Velg fag:</label>
+      <select id="quiz-subject">
+        <option value="matematikk">Matematikk</option>
+        <option value="historie">Historie</option>
+        <option value="naturfag">Naturfag</option>
+        <option value="engelsk">Engelsk</option>
+      </select>
+      <label for="quiz-grade">Velg trinn:</label>
+      <select id="quiz-grade">
+        <option value="1">1. klasse</option>
+        <option value="2">2. klasse</option>
+        <option value="3">3. klasse</option>
+        <option value="4">4. klasse</option>
+        <option value="5">5. klasse</option>
+        <option value="vg1">VG1</option>
+        <option value="vg2">VG2</option>
+        <option value="vg3">VG3</option>
+      </select>
+      <button id="start-quiz-btn">Start Quiz</button>
+      <div id="quiz-container"></div>
+    </section>
+
+    <!-- Gloseprøver -->
+    <section id="gloser-section">
+      <h2>Gloseprøver</h2>
+      <label for="gloser-subject">Velg fag:</label>
+      <select id="gloser-subject">
+        <option value="engelsk">Engelsk</option>
+        <option value="tysk">Tysk</option>
+        <option value="spansk">Spansk</option>
+      </select>
+      <button id="start-gloser-btn">Start Gloseprøve</button>
+      <div id="gloser-container"></div>
+    </section>
+  </main>
+
+  <script>
+    // --- JS ---
+    const chatBox = document.getElementById('chat-box');
+    const chatInput = document.getElementById('chat-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    sendBtn.addEventListener('click', async () => {
+      const question = chatInput.value.trim();
+      if (!question) return;
+      appendMessage("Du: " + question);
+      chatInput.value = '';
+      const answer = await getAIAnswer(question);
+      appendMessage("AI: " + answer);
+    });
+
+    function appendMessage(message) {
+      const p = document.createElement('p');
+      p.textContent = message;
+      chatBox.appendChild(p);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function getAIAnswer(question) {
+      if (question.toLowerCase().includes("andre verdenskrig")) {
+        return "1900-tallet, fra 1939 til 1945.";
+      }
+      return "Jeg kan hjelpe med det! (AI svar vil komme her)";
+    }
+
+    const startQuizBtn = document.getElementById('start-quiz-btn');
+    const quizContainer = document.getElementById('quiz-container');
+
+    startQuizBtn.addEventListener('click', () => {
+      const subject = document.getElementById('quiz-subject').value;
+      const grade = document.getElementById('quiz-grade').value;
+      startQuiz(subject, grade);
+    });
+
+    function startQuiz(subject, grade) {
+      quizContainer.innerHTML = `<p>Starter quiz i ${subject}, trinn ${grade}...</p>`;
+    }
+
+    const startGloserBtn = document.getElementById('start-gloser-btn');
+    const gloserContainer = document.getElementById('gloser-container');
+
+    startGloserBtn.addEventListener('click', () => {
+      const subject = document.getElementById('gloser-subject').value;
+      startGloser(subject);
+    });
+
+    function startGloser(subject) {
+      gloserContainer.innerHTML = `<p>Starter gloseprøve i ${subject}...</p>`;
+    }
+  </script>
+</body>
+</html>
